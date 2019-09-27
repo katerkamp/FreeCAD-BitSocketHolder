@@ -1,3 +1,6 @@
+ifdef::env-github[]
+:imagesdir: examples/
+endif::[]
 = FreeCAD Workbench for creating Magnetic Bit/Socket Holders
 
 Create holders like this:
