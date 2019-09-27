@@ -2,4 +2,4 @@
 
 Create holders like this:
 
-image::tutorial/socket-holder.jpg[]
+image::socket-holder.jpg[]
