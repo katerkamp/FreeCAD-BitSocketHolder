@@ -12,7 +12,7 @@ may be created using Sketcher. Holes for cylindrical magnets are created by defa
 They can be equipped with magnets of 2mm diameter and 4mm length to hold sockets 
 and bits in place.
 
-Each created holder becomes a part for use in the Part workbench.
+Each holder slot becomes a part for use in the Part workbench.
 
 Custom tool shapes can be created using the Sketcher workbench: Construct
 a sketch consisting of a single closed loop polygon in the XY-Plane. 
