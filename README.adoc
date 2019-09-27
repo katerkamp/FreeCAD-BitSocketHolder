@@ -1,8 +1,23 @@
-ifdef::env-github[]
 :imagesdir: examples/
-endif::[]
+
 = FreeCAD Workbench for creating Magnetic Bit/Socket Holders
 
 Create holders like this:
 
 image::socket-holder.jpg[]
+
+Bit/Socket Holders is a FreeCAD workbench for convenient creation of 3D printable
+holders for hex bits, sockets and other tools. Custom shapes are supported and
+may be created using Sketcher. Holes for cylindrical magnets are created by default.
+They can be equipped with magnets of 2mm diameter and 4mm length to hold sockets 
+and bits in place.
+
+Each created holder becomes a part for use in the Part workbench.
+
+Custom tool shapes can be created using the Sketcher workbench: Construct
+a sketch consisting of a single closed loop polygon in the XY-Plane. 
+Add Points for magnet holes.
+The _Any Shape Holder_ tool button opens a dialog which asks for the
+sketch name and then creates a part object out of it.
+
+
