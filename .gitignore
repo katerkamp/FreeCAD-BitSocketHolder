@@ -68,6 +68,7 @@ profile
 *.ipr
 *.iml
 *.releaseBackup
+venv
 
 # NB noise
 nbactions.xml
@@ -79,6 +80,9 @@ nb-configuration.xml
 .settings/**
 .project
 .classpath
+
+# Eric
+*.e4p
 
 # Maven plugins noise
 dependency-reduced-pom.xml

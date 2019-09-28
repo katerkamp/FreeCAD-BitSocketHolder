@@ -12,6 +12,7 @@ from PySide.QtGui import *
 from os.path import join, dirname, abspath
 from sys import platform
 
+
 vQt=int(qVersion().split('.')[0])
 
 class prototypeDialog(object): 
@@ -27,7 +28,7 @@ class prototypeDialog(object):
     else:
       FreeCAD.Console.PrintMessage('Keyboard shortcuts available.\n"S" to select\n"RETURN" to perform action\n')
       try:
-        self.view=FreeCADGui.activeDocument().activeView() # get3DView()
+        self.view=FreeCADGui.activeDocument().activeView()
         self.call=self.view.addEventCallback("SoEvent", self.action)
       except:
         FreeCAD.Console.PrintError('No view available.\n')

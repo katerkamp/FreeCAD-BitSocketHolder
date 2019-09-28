@@ -21,6 +21,8 @@
 #*   USA                                                                    *
 #*                                                                          *
 #****************************************************************************
+import Workbench as Workbench
+
 
 class ToolboxTray ( Workbench ):
 
