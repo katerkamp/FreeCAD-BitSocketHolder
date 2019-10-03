@@ -66,44 +66,6 @@ class SocketHolder(holderType):
 
     print("Create Cutout" + str(fp.CutoutObject))
 
-    # calculate tray insert height (y direction)
-    # calculate tray insert depth
-    maxY = 0 # depends on hole diameter
-    maxZ = 0 # depends on hole depth
-    for obj in FreeCAD.activeDocument().Objects:
-      objGui = FreeCAD.activeDocument().getObject(obj.Name)
-      if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
-        print(objGui.Name + " " + objGui.Label + " dia:" + str(objGui.Diameter) + " height:" + str(objGui.Shape.BoundBox.YLength))
-        if objGui.Shape.BoundBox.YLength == float("-inf"):
-            continue # thats our self
-        if maxY < objGui.Shape.BoundBox.YLength:
-          maxY = objGui.Shape.BoundBox.YLength
-        if objGui.Tag:
-            ZLengthNoText = objGui.Shape.BoundBox.ZLength - props.tagTextHeight
-        else:
-            ZLengthNoText = objGui.Shape.BoundBox.ZLength
-        if maxZ < ZLengthNoText:
-          maxZ = ZLengthNoText
-
-    trayHeight = math.ceil(socketHoleDiameter + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    slotWidth = math.ceil(socketHoleDiameter + 2 * props.marginTop) # todo use marginLeftRight
-    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-    print("Depth is " + str(trayDepth) + " = " + str(fp.Depth) + "+" + str(props.magHoleDepth) + "+" + str(props.basePlateThickness))
-
-    markRecompute = False
-    if trayDepth > maxZ:
-      markRecompute = True
-    else:
-      trayDepth = maxZ
-    if trayHeight > maxY:
-      markRecompute = True
-    else:
-      trayHeight = maxY
-
-    print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
-
-    bsh_utils.markHolderRecompute(markRecompute)
-
     # Create nut hole with 4 magholes
     base=Part.Face(Part.Wire(Part.makeCircle((socketHoleDiameter)/2)))
     socketHole = base.extrude(FreeCAD.Vector(0,0,-1 * fp.Depth))
@@ -116,7 +78,15 @@ class SocketHolder(holderType):
     socketHole = socketHole.fuse(magHole2)
     socketHole = socketHole.fuse(magHole3)
     socketHole = socketHole.fuse(magHole4)
+
+    trayHeight = math.ceil(socketHole.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
+    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
+    slotWidth = math.ceil(socketHole.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
+
     socketHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - socketHoleDiameter/2, 0))
+
+    markRecompute = bsh_utils.checkIfHolderIsBiggerThanOthers(props, socketHole.BoundBox.XLength, socketHole.BoundBox.YLength, fp.Depth)
+    bsh_utils.markHolderRecompute(markRecompute)
 
     box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
     box.translate(FreeCAD.Vector(slotWidth, 0, 0))
@@ -148,44 +118,6 @@ class BitHolder(holderType):
     props = FreeCAD.activeDocument().TrayProps
     bitHoleDiameter = fp.Diameter + props.holeTolerance  # fp.Diameter is measured diameter of nut
 
-    # calculate tray insert height (y direction)
-    # calculate tray insert depth
-    maxY = 0 # depends on hole diameter
-    maxZ = 0 # depends on hole depth
-    for obj in FreeCAD.activeDocument().Objects:
-      objGui = FreeCAD.activeDocument().getObject(obj.Name)
-      if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
-        print(objGui.Name + " " + objGui.Label + " dia:" + str(objGui.Diameter) + " height:" + str(objGui.Shape.BoundBox.YLength))
-        if objGui.Shape.BoundBox.YLength == float("-inf"):
-            continue # thats our self
-        if maxY < objGui.Shape.BoundBox.YLength:
-          maxY = objGui.Shape.BoundBox.YLength
-        if objGui.Tag:
-            ZLengthNoText = objGui.Shape.BoundBox.ZLength - props.tagTextHeight
-        else:
-            ZLengthNoText = objGui.Shape.BoundBox.ZLength
-        if maxZ < ZLengthNoText:
-          maxZ = ZLengthNoText
-
-    trayHeight = math.ceil(bitHoleDiameter + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    slotWidth = math.ceil(bitHoleDiameter + 2 * props.marginTop) # todo use marginLeftRight
-    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-    print("Depth is " + str(trayDepth) + " = " + str(fp.Depth) + "+" + str(props.magHoleDepth) + "+" + str(props.basePlateThickness))
-
-    markRecompute = False
-    if trayDepth > maxZ:
-      markRecompute = True
-    else:
-      trayDepth = maxZ
-    if trayHeight > maxY:
-      markRecompute = True
-    else:
-      trayHeight = maxY
-
-    print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
-
-    bsh_utils.markHolderRecompute(markRecompute)
-
     # Create nut hole with 4 magholes
     r=bitHoleDiameter/2
     s=0.8660254
@@ -208,7 +140,15 @@ class BitHolder(holderType):
     bitHole = bitHole.fuse(magHole2)
     bitHole = bitHole.fuse(magHole3)
     bitHole = bitHole.fuse(magHole4)
+
+    trayHeight = math.ceil(bitHole.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
+    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
+    slotWidth = math.ceil(bitHole.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
+
     bitHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - bitHoleDiameter/2, 0))
+
+    markRecompute = bsh_utils.checkIfHolderIsBiggerThanOthers(props, bitHole.BoundBox.XLength, bitHole.BoundBox.YLength, fp.Depth)
+    bsh_utils.markHolderRecompute(markRecompute)
 
     box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
     box.translate(FreeCAD.Vector(slotWidth, 0, 0))
