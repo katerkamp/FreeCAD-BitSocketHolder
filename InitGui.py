@@ -21,15 +21,12 @@
 #*   USA                                                                    *
 #*                                                                          *
 #****************************************************************************
-import Workbench as Workbench
-
 
 class ToolboxTray ( Workbench ):
 
-  def __init__(self):
-    self.__class__.Icon = FreeCAD.getUserAppDataDir()+"Mod" + "/BitSocketHolder/icons/katerkamp-logo.svg"
-    self.__class__.MenuText = "Bit/Socket Holder"
-    self.__class__.ToolTip = "Bits/Socket Holders for Craftman Toolbox"
+  Icon = FreeCAD.getUserAppDataDir()+"Mod" + "/BitSocketHolder/icons/katerkamp-logo.svg"
+  MenuText = "Bit/Socket Holder"
+  ToolTip = "Bits/Socket Holders for Craftman Toolbox"
 
   # todo these tools are always active even if Gui.ActiveDocument is None, grey them out
   def Initialize(self):
@@ -54,13 +51,14 @@ class ToolboxTray ( Workbench ):
     Msg("Deleted variables in FreeCAD module:\n")
     Msg("__activeBSH__\n")
 
-#  def ContextMenu(self, recipient):
-#    """This is executed whenever the user right-clicks on screen"""
-#    # "recipient" will be either "view" or "tree"
-#    self.appendContextMenu("My commands",self.list) # add commands to the context menu
+  def ContextMenu(self, recipient):
+    """This is executed whenever the user right-clicks on screen"""
+    # "recipient" will be either "view" or "tree"
+    #self.appendContextMenu("My commands",self.list) # add commands to the context menu
 
   def GetClassName(self):
     # this function is mandatory if this is a full python workbench
     return "Gui::PythonWorkbench"
 
-Gui.addWorkbench(ToolboxTray)
+
+Gui.addWorkbench(ToolboxTray())

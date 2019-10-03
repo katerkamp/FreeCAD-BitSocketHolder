@@ -40,6 +40,7 @@ class SocketHolder(holderType):
     Tag(string): Tag
     Diameter (float): Diam
     Depth (float): Depth'''
+
   def __init__(self, obj, Tag="",Diameter=12,Depth=10,CutoutObject=False,TagObject=True):
     # initialize the parent class
     super(SocketHolder,self).__init__(obj)
@@ -53,8 +54,10 @@ class SocketHolder(holderType):
     self.Label = obj.Name + Tag
     # define specific properties
     #obj.addProperty("App::PropertyString","FooType","Foo","Type of flange").FooType="foobar"
+
   def onChanged(self, fp, prop):
     return None
+
   def execute(self, fp): # fp is FeaturePython
     import math
     props = FreeCAD.activeDocument().TrayProps
@@ -83,7 +86,7 @@ class SocketHolder(holderType):
           maxZ = ZLengthNoText
 
     trayHeight = math.ceil(socketHoleDiameter + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    trayInsertWidth = math.ceil(socketHoleDiameter + 2 * props.marginTop) # todo use marginLeftRight
+    slotWidth = math.ceil(socketHoleDiameter + 2 * props.marginTop) # todo use marginLeftRight
     trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
     print("Depth is " + str(trayDepth) + " = " + str(fp.Depth) + "+" + str(props.magHoleDepth) + "+" + str(props.basePlateThickness))
 
@@ -97,14 +100,9 @@ class SocketHolder(holderType):
     else:
       trayHeight = maxY
 
-    print("Tray Insert Block Size: w" + str(trayInsertWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
+    print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
 
-    if markRecompute:
-      print("Marking all SocketHolders to recompute")
-      for obj in FreeCAD.activeDocument().Objects:
-        objGui = FreeCAD.activeDocument().getObject(obj.Name)
-        if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
-          objGui.touch()
+    bsh_utils.markHolderRecompute(mark)
 
     # Create nut hole with 4 magholes
     base=Part.Face(Part.Wire(Part.makeCircle((socketHoleDiameter)/2)))
@@ -118,19 +116,14 @@ class SocketHolder(holderType):
     socketHole = socketHole.fuse(magHole2)
     socketHole = socketHole.fuse(magHole3)
     socketHole = socketHole.fuse(magHole4)
-    socketHole.translate(FreeCAD.Vector(trayInsertWidth/2, trayHeight - props.marginTop - socketHoleDiameter/2, 0))
+    socketHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - socketHoleDiameter/2, 0))
 
-    box = Part.makeBox(trayInsertWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
-    box.translate(FreeCAD.Vector(trayInsertWidth, 0, 0))
+    box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
+    box.translate(FreeCAD.Vector(slotWidth, 0, 0))
     #holder = box.fuse(socketHole)  # devel
     holder = box.cut(socketHole)
 
-    # todo cannot handle umlaut chars
-    fontdir, font = bsh_utils.getFont(props)
-    string = Part.makeWireString(fp.Tag,fontdir, font, props.tagTextSize, 0)
-    tag = Part.Compound([Part.Face(c) for c in string])
-    tag = tag.extrude(FreeCAD.Vector(0,0,props.tagTextHeight))
-    tag.translate(FreeCAD.Vector((trayInsertWidth - tag.BoundBox.XLength)/2,props.marginBottom,0))
+    tag = bsh_util.makeTag(props)
     holder = holder.fuse(tag)
 
     fp.Shape = holder
@@ -175,7 +168,7 @@ class BitHolder(holderType):
           maxZ = ZLengthNoText
 
     trayHeight = math.ceil(bitHoleDiameter + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    trayInsertWidth = math.ceil(bitHoleDiameter + 2 * props.marginTop) # todo use marginLeftRight
+    slotWidth = math.ceil(bitHoleDiameter + 2 * props.marginTop) # todo use marginLeftRight
     trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
     print("Depth is " + str(trayDepth) + " = " + str(fp.Depth) + "+" + str(props.magHoleDepth) + "+" + str(props.basePlateThickness))
 
@@ -189,14 +182,9 @@ class BitHolder(holderType):
     else:
       trayHeight = maxY
 
-    print("Tray Insert Block Size: w" + str(trayInsertWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
+    print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
 
-    if markRecompute:
-      print("Marking all SocketHolders to recompute")
-      for obj in FreeCAD.activeDocument().Objects:
-        objGui = FreeCAD.activeDocument().getObject(obj.Name)
-        if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
-          objGui.touch()
+    bsh_utils.markHolderRecompute(markRecompute)
 
     # Create nut hole with 4 magholes
     r=bitHoleDiameter/2
@@ -220,25 +208,21 @@ class BitHolder(holderType):
     bitHole = bitHole.fuse(magHole2)
     bitHole = bitHole.fuse(magHole3)
     bitHole = bitHole.fuse(magHole4)
-    bitHole.translate(FreeCAD.Vector(trayInsertWidth/2, trayHeight - props.marginTop - bitHoleDiameter/2, 0))
+    bitHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - bitHoleDiameter/2, 0))
 
-    box = Part.makeBox(trayInsertWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
-    box.translate(FreeCAD.Vector(trayInsertWidth, 0, 0))
+    box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
+    box.translate(FreeCAD.Vector(slotWidth, 0, 0))
     #holder = box.fuse(bitHole)  # devel
     holder = box.cut(bitHole)
 
-    # todo cannot handle umlaut chars
-    fontdir, font = bsh_utils.getFont(props)
-    string = Part.makeWireString(fp.Tag,fontdir, font, props.tagTextSize, 0)
-    tag = Part.Compound([Part.Face(c) for c in string])
-    tag = tag.extrude(FreeCAD.Vector(0,0,props.tagTextHeight))
-    tag.translate(FreeCAD.Vector((trayInsertWidth - tag.BoundBox.XLength)/2,props.marginBottom,0))
+    tag = bsh_util.makeTag(props)
     holder = holder.fuse(tag)
 
     fp.Shape = holder
     super(BitHolder,self).execute(fp) # perform common operations
     
 class AnyHolder(holderType):
+
   def __init__(self, obj, Tag="",ShapeLabel="Sketch",Depth=10):
     # initialize the parent class
     super(AnyHolder,self).__init__(obj)
@@ -251,8 +235,10 @@ class AnyHolder(holderType):
     self.Label = obj.Name + Tag
     # define specific properties
     obj.addProperty("App::PropertyString","ShapeLabel","Base","Sketch label of shape").ShapeLabel=ShapeLabel
+
   def onChanged(self, fp, prop):
     return None
+
   def execute(self, fp): # fp is FeaturePython
     import math
     props = FreeCAD.activeDocument().TrayProps
@@ -282,68 +268,25 @@ class AnyHolder(holderType):
     # Scale slighly bigger for tolerance
     #Draft.scale([toolShape],delta=FreeCAD.Vector(1.0,1.0,1.0),center=FreeCAD.Vector(-106.0,-86.0,0.0),copy=False,legacy=False)
 
-    toolWidth = toolCutout.BoundBox.XLength
-    toolHeight = toolCutout.BoundBox.YLength
-
-    # see what sizes already exist
-    # calculate tray insert height (y direction)
-    # calculate tray insert depth
-    maxY = 0 # depends on hole diameter
-    maxZ = 0 # depends on hole depth
-    for obj in FreeCAD.activeDocument().Objects:
-      objGui = FreeCAD.activeDocument().getObject(obj.Name)
-      if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
-        print(objGui.Name + " " + objGui.Label + " dia:" + str(objGui.Diameter) + " height:" + str(objGui.Shape.BoundBox.YLength))
-        if objGui.Shape.BoundBox.YLength == float("-inf"):
-            continue # thats our self
-        if maxY < objGui.Shape.BoundBox.YLength:
-          maxY = objGui.Shape.BoundBox.YLength
-        if objGui.Tag:
-            ZLengthNoText = objGui.Shape.BoundBox.ZLength - props.tagTextHeight
-        else:
-            ZLengthNoText = objGui.Shape.BoundBox.ZLength
-        if maxZ < ZLengthNoText:
-          maxZ = ZLengthNoText
-
-    trayHeight = math.ceil(toolHeight + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    trayInsertWidth = math.ceil(toolWidth + 2 * props.marginTop) # todo use marginLeftRight
-    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-
-    markRecompute = False
-    if trayDepth > maxZ:
-      markRecompute = True
-    else:
-      trayDepth = maxZ
-    if trayHeight > maxY:
-      markRecompute = True
-    else:
-      trayHeight = maxY
-
-    print("Tray Insert Block Size: w" + str(trayInsertWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
-
-    if markRecompute:
-      print("Marking all SocketHolders to recompute")
-      for obj in FreeCAD.activeDocument().Objects:
-        objGui = FreeCAD.activeDocument().getObject(obj.Name)
-        if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
-          objGui.touch()
+    markRecompute = bsh_utils.checkIfHolderIsBiggerThanOthers(props, toolCutout.BoundBox.XLength, toolCutout.BoundBox.YLength, fp.Depth)
+    bsh_utils.markHolderRecompute(markRecompute)
 
     # center cutout in box horizontally, position vertically with top margin
-    xoff = toolWidth/2 - toolCutout.BoundBox.XMax + trayInsertWidth/2
-    yoff = trayHeight - toolCutout.BoundBox.YMax - props.marginTop
+    slotWidth = math.ceil(toolCutout.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
+    trayHeight = math.ceil(toolCutout.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
+    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
+
+    xoff = toolCutout.BoundBox.XLength/2 - toolCutout.BoundBox.XMax + slotWidth/2
+    yoffCenter = toolCutout.BoundBox.YLength/2 - toolCutout.BoundBox.YMax
+    yoff = yoffCenter + trayHeight - props.marginTop - toolCutout.BoundBox.YLength/2
     toolCutout.translate(FreeCAD.Vector(xoff, yoff, 0))
 
-    box = Part.makeBox(trayInsertWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
-    box.translate(FreeCAD.Vector(trayInsertWidth, 0, 0))  # todo center
+    box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
+    box.translate(FreeCAD.Vector(slotWidth, 0, 0))  # todo center
     #holder = box.fuse(toolCutout)  # devel
     holder = box.cut(toolCutout)
 
-    # todo cannot handle umlaut chars
-    fontdir, font = bsh_utils.getFont(props)
-    string = Part.makeWireString(fp.Tag,fontdir, font, props.tagTextSize, 0)
-    tag = Part.Compound([Part.Face(c) for c in string])
-    tag = tag.extrude(FreeCAD.Vector(0,0,props.tagTextHeight))
-    tag.translate(FreeCAD.Vector((trayInsertWidth - tag.BoundBox.XLength)/2,props.marginBottom,0))
+    tag = bsh_utils.makeTag(props, fp.Tag, slotWidth)
     holder = holder.fuse(tag)
 
     fp.Shape = holder

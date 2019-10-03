@@ -167,7 +167,6 @@ def initTrayProps():
   print('created TrayProps spredsheet')
 
 
-
 # create closed poylgon
 # add points which become magnet holes
 def makeAnyShape():
