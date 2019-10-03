@@ -47,7 +47,7 @@ def makeTag(props, tagString, slotWidth):
   return tag
 
 
-def checkIfHolderIsBiggerThanOthers(props, toolWidth, toolHeight, toolDepth):
+def getSlotSize(props, toolWidth, toolHeight, toolDepth):
   # see what sizes already exist
   # calculate tray insert height (y direction)
   # calculate tray insert depth
@@ -72,18 +72,18 @@ def checkIfHolderIsBiggerThanOthers(props, toolWidth, toolHeight, toolDepth):
   slotWidth = math.ceil(toolWidth + 2 * props.marginTop) # todo use marginLeftRight
   trayDepth = toolDepth + props.magHoleDepth + props.basePlateThickness
 
-  markRecompute = False
+  isRecomputeNeeded = False
   if trayDepth > maxZ:
-    markRecompute = True
+    isRecomputeNeeded = True
   else:
     trayDepth = maxZ
   if trayHeight > maxY:
-    markRecompute = True
+    isRecomputeNeeded = True
   else:
     trayHeight = maxY
 
   print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
 
-  return markRecompute
+  return isRecomputeNeeded, slotWidth, trayHeight, trayDepth
 
   

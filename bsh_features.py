@@ -79,14 +79,15 @@ class SocketHolder(holderType):
     socketHole = socketHole.fuse(magHole3)
     socketHole = socketHole.fuse(magHole4)
 
-    trayHeight = math.ceil(socketHole.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-    slotWidth = math.ceil(socketHole.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
+    #trayHeight = math.ceil(socketHole.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
+    #trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
+    #slotWidth = math.ceil(socketHole.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
+
+
+    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, socketHole.BoundBox.XLength, socketHole.BoundBox.YLength, fp.Depth)
+    bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     socketHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - socketHoleDiameter/2, 0))
-
-    markRecompute = bsh_utils.checkIfHolderIsBiggerThanOthers(props, socketHole.BoundBox.XLength, socketHole.BoundBox.YLength, fp.Depth)
-    bsh_utils.markHolderRecompute(markRecompute)
 
     box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
     box.translate(FreeCAD.Vector(slotWidth, 0, 0))
@@ -141,14 +142,11 @@ class BitHolder(holderType):
     bitHole = bitHole.fuse(magHole3)
     bitHole = bitHole.fuse(magHole4)
 
-    trayHeight = math.ceil(bitHole.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-    slotWidth = math.ceil(bitHole.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
+
+    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, bitHole.BoundBox.XLength, bitHole.BoundBox.YLength, fp.Depth)
+    bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     bitHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - bitHoleDiameter/2, 0))
-
-    markRecompute = bsh_utils.checkIfHolderIsBiggerThanOthers(props, bitHole.BoundBox.XLength, bitHole.BoundBox.YLength, fp.Depth)
-    bsh_utils.markHolderRecompute(markRecompute)
 
     box = Part.makeBox(slotWidth, trayHeight, trayDepth, vO, FreeCAD.Vector(0,0,-1))
     box.translate(FreeCAD.Vector(slotWidth, 0, 0))
@@ -208,14 +206,10 @@ class AnyHolder(holderType):
     # Scale slighly bigger for tolerance
     #Draft.scale([toolShape],delta=FreeCAD.Vector(1.0,1.0,1.0),center=FreeCAD.Vector(-106.0,-86.0,0.0),copy=False,legacy=False)
 
-    markRecompute = bsh_utils.checkIfHolderIsBiggerThanOthers(props, toolCutout.BoundBox.XLength, toolCutout.BoundBox.YLength, fp.Depth)
-    bsh_utils.markHolderRecompute(markRecompute)
+    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, toolCutout.BoundBox.XLength, toolCutout.BoundBox.YLength, fp.Depth)
+    bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     # center cutout in box horizontally, position vertically with top margin
-    slotWidth = math.ceil(toolCutout.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
-    trayHeight = math.ceil(toolCutout.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-
     xoff = toolCutout.BoundBox.XLength/2 - toolCutout.BoundBox.XMax + slotWidth/2
     yoffCenter = toolCutout.BoundBox.YLength/2 - toolCutout.BoundBox.YMax
     yoff = yoffCenter + trayHeight - props.marginTop - toolCutout.BoundBox.YLength/2
