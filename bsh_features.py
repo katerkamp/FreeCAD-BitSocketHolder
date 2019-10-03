@@ -102,7 +102,7 @@ class SocketHolder(holderType):
 
     print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
 
-    bsh_utils.markHolderRecompute(mark)
+    bsh_utils.markHolderRecompute(markRecompute)
 
     # Create nut hole with 4 magholes
     base=Part.Face(Part.Wire(Part.makeCircle((socketHoleDiameter)/2)))
@@ -123,7 +123,7 @@ class SocketHolder(holderType):
     #holder = box.fuse(socketHole)  # devel
     holder = box.cut(socketHole)
 
-    tag = bsh_util.makeTag(props)
+    tag = bsh_utils.makeTag(props, fp.Tag, slotWidth)
     holder = holder.fuse(tag)
 
     fp.Shape = holder
@@ -215,7 +215,7 @@ class BitHolder(holderType):
     #holder = box.fuse(bitHole)  # devel
     holder = box.cut(bitHole)
 
-    tag = bsh_util.makeTag(props)
+    tag = bsh_utils.makeTag(props, fp.Tag, slotWidth)
     holder = holder.fuse(tag)
 
     fp.Shape = holder
