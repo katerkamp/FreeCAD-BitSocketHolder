@@ -15,6 +15,7 @@ vY=FreeCAD.Vector(0,1,0)
 vZ=FreeCAD.Vector(0,0,1)
 
 from Holder import Holder
+from HolderProperties import HolderProperties
     
 class AnyHolder(Holder):
 
@@ -34,9 +35,10 @@ class AnyHolder(Holder):
   def onChanged(self, fp, prop):
     return None
 
+  #todo if no sketch given, return with message
   def execute(self, fp): # fp is FeaturePython
     import math
-    props = FreeCAD.activeDocument().TrayProps
+    props = HolderProperties().getProperties()
 
     # extrude sketch "Sketch" and get dimensions
     sketchName = fp.ShapeLabel

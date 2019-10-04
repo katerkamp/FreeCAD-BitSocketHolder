@@ -15,6 +15,7 @@ vY=FreeCAD.Vector(0,1,0)
 vZ=FreeCAD.Vector(0,0,1)
 
 from Holder import Holder
+from HolderProperties import HolderProperties
 
 class SocketHolder(Holder):
   '''Class for object 
@@ -43,9 +44,9 @@ class SocketHolder(Holder):
 
   def execute(self, fp): # fp is FeaturePython
     import math
-    props = FreeCAD.activeDocument().TrayProps
+    props = HolderProperties().getProperties()
 
-    socketHoleDiameter = fp.Diameter + props.holeTolerance  # fp.Diameter is measured diameter of nut
+    socketHoleDiameter = fp.Diameter + props.cutoutIncrease  # fp.Diameter is measured diameter of nut
 
     print("Create Cutout" + str(fp.CutoutObject))
 

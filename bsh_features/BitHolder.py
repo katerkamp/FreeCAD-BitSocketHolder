@@ -15,6 +15,7 @@ vY=FreeCAD.Vector(0,1,0)
 vZ=FreeCAD.Vector(0,0,1)
 
 from Holder import Holder
+from HolderProperties import HolderProperties
     
 class BitHolder(Holder):
   def __init__(self, obj, Tag="",Diameter=12,Depth=10):
@@ -32,8 +33,8 @@ class BitHolder(Holder):
     return None
   def execute(self, fp): # fp is FeaturePython
     import math
-    props = FreeCAD.activeDocument().TrayProps
-    bitHoleDiameter = fp.Diameter + props.holeTolerance  # fp.Diameter is measured diameter of nut
+    props = HolderProperties().getProperties()
+    bitHoleDiameter = fp.Diameter + props.cutoutIncrease  # fp.Diameter is measured diameter of nut
 
     # Create nut hole with 4 magholes
     r=bitHoleDiameter/2

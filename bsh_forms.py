@@ -16,12 +16,13 @@ from PySide.QtCore import *
 from PySide.QtGui import *
 from math import degrees
 from DraftVecUtils import rounded
+from HolderProperties import HolderProperties
 
 class insertSocketHolderForm(prototypeDialog):
   def __init__(self):
     super(insertSocketHolderForm,self).__init__('socketHolder.ui')
   def accept(self):
-    bsh_cmd.initTrayProps()
+    HolderProperties().initDocument()
 
     propList=[\
       self.form.SocketTag.text(),\
@@ -61,7 +62,7 @@ class insertBitHolderForm(prototypeDialog):
   def __init__(self):
     super(insertBitHolderForm,self).__init__('bitHolder.ui')
   def accept(self):
-    bsh_cmd.initTrayProps()
+    HolderProperties().initDocument()
 
     propList=[self.form.BitTag.text(),self.form.BitDiameter.value(),self.form.BitInsertDepth.value()]
 
@@ -107,7 +108,7 @@ class insertAnyHolderForm(prototypeDialog):
 
   def accept(self):
     print("Any Holder Accept")
-    bsh_cmd.initTrayProps()
+    HolderProperties().initDocument()
 
     propList=[self.form.AnyTag.text(),self.form.shapesAvailable.currentText(),self.form.AnyInsertDepth.value()]
 
