@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
 # (c) 2019 Stefan Katerkamp
 # LGPL: This file is part of the Bit Socket Holder Workbench for FreeCAD
 
@@ -36,23 +39,61 @@ def markHolderRecompute(mark):
       objGui.touch()
 
 
-# todo: special chars like umlauts
+# make a 3D version of a String
 def makeTag(props, tagString, slotWidth):
   import Part
   fontdir, font = getFont(props)
-  string = Part.makeWireString(tagString,fontdir, font, props.tagTextSize, 0)
-  tag = Part.Compound([Part.Face(c) for c in string])
-  tag = tag.extrude(FreeCAD.Vector(0,0,props.tagTextHeight))
+
+  # test: tagS=Part.makeWireString("34öäüZB", "/usr/share/fonts/truetype/dejavu/", "DejaVuSans-Bold.ttf", 6.0, 0)
+  tagS = Part.makeWireString(unicode(tagString),fontdir, font, props.tagTextSize, 0)
+
+  # Draft causes problems with GUI
+  #tagShapeString = Draft.makeShapeString(String=unicode(tagString),\
+  #  FontFile=join(fontdir,font),Size=props.tagTextSize,Tracking=0) 
+  #tag=tagShapeString.Shape.extrude(FreeCAD.Vector(0,0,props.tagTextHeight))
+  #tagF = [Part.Face(c) for c in tagS] # does not work for multi wire chars like "4", so I do this:
+
+  tagF = []
+  tagFcuts = []
+  for c in tagS:
+    for ci in c:
+      if not isInside(ci, c):
+        tagF.append(Part.Face(ci))
+      else:
+        tagFcuts.append(Part.Face(ci))
+    
+  tagC = Part.Compound(tagF)
+  tagCcuts = Part.Compound(tagFcuts)
+  tagC = tagC.cut(tagCcuts)
+
+  tag = tagC.extrude(FreeCAD.Vector(0,0,props.tagTextHeight))
+
   tag.translate(FreeCAD.Vector((slotWidth - tag.BoundBox.XLength)/2,props.marginBottom,0))
   return tag
 
+def isInside(wire, charWireList):
+  import Part
+  otherWires = []
+  for w in charWireList:
+    if wire != w:
+      otherWires.append(w)
+  for w in otherWires:
+    f = Part.Face(w)
+    for v in wire.Vertexes:
+        p = v.Point
+        if f.isInside(p,0.0,True):
+          return True
+  return False
+  
 
 def getSlotSize(props, toolWidth, toolHeight, toolDepth):
   # see what sizes already exist
   # calculate tray insert height (y direction)
   # calculate tray insert depth
+
   maxY = 0 # depends on hole diameter
   maxZ = 0 # depends on hole depth
+
   for obj in FreeCAD.activeDocument().Objects:
     objGui = FreeCAD.activeDocument().getObject(obj.Name)
     if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
@@ -73,14 +114,15 @@ def getSlotSize(props, toolWidth, toolHeight, toolDepth):
   trayDepth = toolDepth + props.magHoleDepth + props.basePlateThickness
 
   isRecomputeNeeded = False
-  if trayDepth > maxZ:
-    isRecomputeNeeded = True
-  else:
-    trayDepth = maxZ
-  if trayHeight > maxY:
-    isRecomputeNeeded = True
-  else:
-    trayHeight = maxY
+  if maxZ > 0:
+    if trayDepth > maxZ:
+      isRecomputeNeeded = True
+    else:
+      trayDepth = maxZ
+    if trayHeight > maxY:
+      isRecomputeNeeded = True
+    else:
+      trayHeight = maxY
 
   print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
 

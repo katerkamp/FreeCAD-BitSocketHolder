@@ -144,7 +144,6 @@ class BitHolder(holderType):
 
 
     isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, bitHole.BoundBox.XLength, bitHole.BoundBox.YLength, fp.Depth)
-    bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     bitHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - bitHoleDiameter/2, 0))
 
@@ -155,6 +154,8 @@ class BitHolder(holderType):
 
     tag = bsh_utils.makeTag(props, fp.Tag, slotWidth)
     holder = holder.fuse(tag)
+
+    bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     fp.Shape = holder
     super(BitHolder,self).execute(fp) # perform common operations
