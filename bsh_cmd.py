@@ -2,9 +2,12 @@
 # LGPL: This file is part of the Bit Socket Holder Workbench for FreeCAD
 
 __title__="bsh functions"
-import FreeCAD, FreeCADGui, Part, bsh_features
+import FreeCAD, FreeCADGui, Part
 from DraftVecUtils import rounded
 from math import degrees
+from bsh_features.SocketHolder import SocketHolder
+from bsh_features.BitHolder import BitHolder
+from bsh_features.AnyHolder import AnyHolder
 
 __author__="skat"
 __url__="github.com/katerkamp/ToolboxTrayOrganizer"
@@ -26,7 +29,7 @@ def makeSocketHolder(propList=[], pos=None, Z=None):
   if Z==None:
     Z=FreeCAD.Vector(0,0,1)
   a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","SocketHolder")
-  bsh_features.SocketHolder(a,*propList)
+  SocketHolder(a,*propList)
   a.ViewObject.Proxy=0
   a.Placement.Base=pos
   rot=FreeCAD.Rotation(FreeCAD.Vector(0,0,1),Z)
@@ -39,7 +42,7 @@ def makeBitHolder(propList=[], pos=None, Z=None):
   if Z==None:
     Z=FreeCAD.Vector(0,0,1)
   a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","BitHolder")
-  bsh_features.BitHolder(a,*propList)
+  BitHolder(a,*propList)
   a.ViewObject.Proxy=0
   a.Placement.Base=pos
   rot=FreeCAD.Rotation(FreeCAD.Vector(0,0,1),Z)
@@ -52,7 +55,7 @@ def makeAnyHolder(propList=[], pos=None, Z=None):
   if Z==None:
     Z=FreeCAD.Vector(0,0,1)
   a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","AnyHolder")
-  bsh_features.AnyHolder(a,*propList)
+  AnyHolder(a,*propList)
   a.ViewObject.Proxy=0
   a.Placement.Base=pos
   rot=FreeCAD.Rotation(FreeCAD.Vector(0,0,1),Z)
