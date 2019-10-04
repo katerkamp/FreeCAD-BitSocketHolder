@@ -46,14 +46,16 @@ class SocketHolder(Holder):
     import math
     props = HolderProperties().getProperties()
 
-    socketHoleDiameter = fp.Diameter + props.cutoutIncrease  # fp.Diameter is measured diameter of nut
+    socketHoleDiameter = fp.Diameter + (2 * props.cutoutIncrease)  # fp.Diameter is measured diameter of nut
 
-    print("Create Cutout" + str(fp.CutoutObject))
+    print("Create Cutout Object: " + str(fp.CutoutObject)) # todo
 
     # Create nut hole with 4 magholes
     base=Part.Face(Part.Wire(Part.makeCircle((socketHoleDiameter)/2)))
     socketHole = base.extrude(FreeCAD.Vector(0,0,-1 * fp.Depth))
-    xy=(socketHoleDiameter/2 * 0.7071068) - props.magHoleDiameter/5 # todo make property for /5 offset
+
+    xy=(socketHoleDiameter/2 - props.magHoleDiameter/2 + props.magHoleOffset) * math.sin(math.radians(45))
+
     magHole1 = Part.makeCylinder(props.magHoleDiameter/2,props.magHoleDepth,FreeCAD.Vector(xy,xy,-fp.Depth),vZ*-1)
     magHole2 = Part.makeCylinder(props.magHoleDiameter/2,props.magHoleDepth,FreeCAD.Vector(-xy,xy,-fp.Depth),vZ*-1)
     magHole3 = Part.makeCylinder(props.magHoleDiameter/2,props.magHoleDepth,FreeCAD.Vector(xy,-xy,-fp.Depth),vZ*-1)

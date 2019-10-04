@@ -49,7 +49,7 @@ class BitHolder(Holder):
     pointslist = [p1,p2,p3,p4,p5,p6,p1]
     base=Part.Face(Part.Wire(Part.makePolygon(pointslist)))
     bitHole = base.extrude(FreeCAD.Vector(0,0,-1 * fp.Depth))
-    xy=(bitHoleDiameter/2 * 0.7071068) - props.magHoleDiameter/5 # todo make property for /5 offset
+    xy=(bitHoleDiameter/2 * 0.7071068) - props.magHoleDiameter/2 + props.magHoleOffset
     magHole1 = Part.makeCylinder(props.magHoleDiameter/2,props.magHoleDepth,FreeCAD.Vector(xy,xy,-fp.Depth),vZ*-1)
     magHole2 = Part.makeCylinder(props.magHoleDiameter/2,props.magHoleDepth,FreeCAD.Vector(-xy,xy,-fp.Depth),vZ*-1)
     magHole3 = Part.makeCylinder(props.magHoleDiameter/2,props.magHoleDepth,FreeCAD.Vector(xy,-xy,-fp.Depth),vZ*-1)

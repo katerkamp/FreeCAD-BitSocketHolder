@@ -25,23 +25,25 @@ class HolderProperties:
     doc = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet', HolderProperties.DocumentLabel)
   
     doc.set('A1', 'Cutout Increase')
-    doc.set('B1', '0,4')
+    doc.set('B1', '0,2')
     doc.setDisplayUnit('B1:B1', 'mm')
     doc.setAlias('B1', 'cutoutIncrease')
-    doc.set('C1', 'Adds to diameter/size entered, needed to compensate for filament extrusion width')
+    doc.set('C1', 'Move wall to the outside, needed to compensate for filament extrusion width')
 
-    doc.set('A2', 'Magnet Hole Diameter incl. Tolerance')
-    doc.set('B2', '2,2')
+    doc.set('A2', 'Magnet Hole Diameter')
+    doc.set('B2', '2.2')
     doc.setDisplayUnit('B2:B2', 'mm')
     doc.setAlias('B2', 'magHoleDiameter')
+    doc.set('C2', 'Diameter of the magnetic cylinder, including adjustment for filament extrusion width')
 
-    doc.set('A3', 'Magnet Hole Depth incl. Tolerance')
+    doc.set('A3', 'Magnet Hole Depth')
     doc.set('B3', '4.4')
     doc.setDisplayUnit('B3:B3', 'mm')
     doc.setAlias('B3', 'magHoleDepth')
+    doc.set('C3', 'Length of the magnetic cylinder, including adjustment for layer height')
 
     doc.set('A4', 'Text Size for Tags')
-    doc.set('B4', '6')
+    doc.set('B4', '5')
     doc.setDisplayUnit('B4:B4', 'mm')
     doc.setAlias('B4', 'tagTextSize')
 
@@ -70,8 +72,8 @@ class HolderProperties:
     doc.setDisplayUnit('B9:B9', 'mm')
     doc.setAlias('B9', 'marginMiddle')
   
-    doc.set('A10', 'Delta between mount hole radius and magnet circle radius')
-    doc.set('B10', '2')
+    doc.set('A10', 'Magnet offset to outer side')
+    doc.set('B10', '0')
     doc.setDisplayUnit('B10:B10', 'mm')
     doc.setAlias('B10', 'magHoleOffset')
 
