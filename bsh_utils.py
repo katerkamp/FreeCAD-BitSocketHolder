@@ -129,3 +129,17 @@ def getSlotSize(props, toolWidth, toolHeight, toolDepth):
   return isRecomputeNeeded, slotWidth, trayHeight, trayDepth
 
   
+
+def addCutoutObject(fp, part, name):
+  if not fp.CutoutObject:
+    return
+  pos = FreeCAD.Vector(0,0,0)
+  Z = FreeCAD.Vector(0,0,1)
+  a = FreeCAD.activeDocument().addObject('Part::Feature', name)
+  a.Shape = part
+  a.ViewObject.Visibility=False
+  if fp.Tag:
+    a.Label = name + "-" + fp.Tag.replace(' ','_')
+  else:
+    a.Label = name
+

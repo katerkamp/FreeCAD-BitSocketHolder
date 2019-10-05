@@ -1,9 +1,9 @@
-Readme
-* Mag hole radius param
+* Readme
 * Bit Holder bit size drop down instead of diameter
-* Append also bit and any slots to proper right side of tray
-* Auto display x y z dimensions
+* Append also new bit and any slots to proper right side of tray
+* Auto display x y z dimensions of tray
 * Read String and Cutout selector widgets and create extra objects in addition to the slot object
+* Option to upload cutout shapes
 
 
 

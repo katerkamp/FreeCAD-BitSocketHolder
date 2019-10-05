@@ -19,16 +19,18 @@ from HolderProperties import HolderProperties
     
 class AnyHolder(Holder):
 
-  def __init__(self, obj, Tag="",ShapeLabel="Sketch",Depth=10):
+  def __init__(self, obj, Tag="",ShapeLabel="Sketch",Depth=10,CutoutObject=False,TagObject=False):
     # initialize the parent class
     super(AnyHolder,self).__init__(obj)
     obj.addProperty("App::PropertyString","ShapeLabel","Base","Label of Cutout sketch").ShapeLabel
     # define common properties TODO take from TrayProps
     obj.BSHType="Holder" 
-    obj.Tag=Tag
+    obj.Tag=Tag.strip()
     obj.ShapeLabel=ShapeLabel
     obj.Depth=Depth
-    self.Label = obj.Name + Tag
+    obj.CutoutObject = CutoutObject
+    obj.TagObject = TagObject
+    self.Label = obj.Name + Tag.strip().replace(' ','_')
     # define specific properties
     obj.addProperty("App::PropertyString","ShapeLabel","Base","Sketch label of shape").ShapeLabel=ShapeLabel
 
@@ -64,6 +66,8 @@ class AnyHolder(Holder):
 
     # Scale slighly bigger for tolerance
     #Draft.scale([toolShape],delta=FreeCAD.Vector(1.0,1.0,1.0),center=FreeCAD.Vector(-106.0,-86.0,0.0),copy=False,legacy=False)
+
+    bsh_utils.addCutoutObject(fp, toolCutout, 'AnyCutout')
 
     isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, toolCutout.BoundBox.XLength, toolCutout.BoundBox.YLength, fp.Depth)
     bsh_utils.markHolderRecompute(isRecomputeNeeded)

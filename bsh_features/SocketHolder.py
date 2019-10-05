@@ -3,7 +3,7 @@
 
 __title__="Bit/Socket Holder objects"
 __author__="katerkamp"
-__url__="github.com/katerkamp/FreeCAD/BitSocketHolder"
+__url__="github.com/katerkamp/FreeCAD-BitSocketHolder"
 __license__="LGPL 3"
 objs=['SocketHolder', 'BitHolder', 'AnyHolder']
 
@@ -30,12 +30,12 @@ class SocketHolder(Holder):
     super(SocketHolder,self).__init__(obj)
     # define common properties TODO take from TrayProps
     obj.BSHType="Holder" 
-    obj.Tag=Tag
+    obj.Tag=Tag.strip()
     obj.Diameter=Diameter
     obj.Depth=Depth
     obj.CutoutObject = CutoutObject
     obj.TagObject = TagObject
-    self.Label = obj.Name + Tag
+    self.Label = obj.Name + Tag.strip().replace(' ','_')
     # define specific properties
     #obj.addProperty("App::PropertyString","FooType","Foo","Type of flange").FooType="foobar"
 
@@ -65,10 +65,7 @@ class SocketHolder(Holder):
     socketHole = socketHole.fuse(magHole3)
     socketHole = socketHole.fuse(magHole4)
 
-    #trayHeight = math.ceil(socketHole.BoundBox.YLength + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-    #trayDepth = fp.Depth + props.magHoleDepth + props.basePlateThickness
-    #slotWidth = math.ceil(socketHole.BoundBox.XLength + 2 * props.marginTop) # todo use marginLeftRight
-
+    bsh_utils.addCutoutObject(fp, socketHole, 'SocketCutout')
 
     isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, socketHole.BoundBox.XLength, socketHole.BoundBox.YLength, fp.Depth)
     bsh_utils.markHolderRecompute(isRecomputeNeeded)

@@ -64,7 +64,13 @@ class insertBitHolderForm(prototypeDialog):
   def accept(self):
     HolderProperties().initDocument()
 
-    propList=[self.form.BitTag.text(),self.form.BitDiameter.value(),self.form.BitInsertDepth.value()]
+    propList=[\
+      self.form.BitTag.text(),\
+      self.form.BitDiameter.value(),\
+      self.form.BitInsertDepth.value(),\
+      self.form.createCutoutObject.isChecked(),\
+      self.form.createTagObject.isChecked()\
+      ]
 
     # calculate position, right of existing cutouts 
     # todo improve, sort by RL index not Name
@@ -110,7 +116,13 @@ class insertAnyHolderForm(prototypeDialog):
     print("Any Holder Accept")
     HolderProperties().initDocument()
 
-    propList=[self.form.AnyTag.text(),self.form.shapesAvailable.currentText(),self.form.AnyInsertDepth.value()]
+    propList=[\
+      self.form.AnyTag.text(),\
+      self.form.shapesAvailable.currentText(),\
+      self.form.AnyInsertDepth.value(),\
+      self.form.createCutoutObject.isChecked(),\
+      self.form.createTagObject.isChecked()\
+      ]
 
     # calculate position, right of existing cutouts 
     # todo improve, sort by RL index not Name
