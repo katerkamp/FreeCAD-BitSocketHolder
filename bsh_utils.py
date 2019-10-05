@@ -143,3 +143,18 @@ def addCutoutObject(fp, part, name):
   else:
     a.Label = name
 
+
+
+# calculate position, right of existing cutouts
+# todo improve, sort by RL index not Name
+def getNewPosition():
+  pos=FreeCAD.Vector(0, 0, 0)
+  # get list of Cutout objects
+  objs = [i for i in FreeCAD.activeDocument().Objects if hasattr (i, "BSHType") and i.BSHType == "Holder"]
+  #s = sorted(objs, key = lambda w: w.Name, reverse = True)
+  x = 0
+  for h in objs:
+    x = x + h.Shape.BoundBox.XLength
+  pos=FreeCAD.Vector(x, 0, 0)
+  return pos
+

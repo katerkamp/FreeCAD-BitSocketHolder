@@ -9,6 +9,7 @@ __license__="LGPL 3"
 import FreeCAD,FreeCADGui,Part
 pq=FreeCAD.Units.parseQuantity
 import bsh_cmd
+import bsh_utils
 from prototype_forms import prototypeDialog
 from os import listdir
 from os.path import join, dirname, abspath
@@ -32,21 +33,8 @@ class insertSocketHolderForm(prototypeDialog):
       self.form.createTagObject.isChecked()\
       ]
 
-    # calculate position, right of existing cutouts 
-    # todo improve, sort by RL index not Name
-
-    # get list of Cutout objects
-    objs = [i for i in FreeCAD.activeDocument().Objects if hasattr (i, "BSHType") and i.BSHType == "Holder"]
-    s = sorted(objs, key = lambda w: w.Name, reverse = True)
-    if len(s) > 0:
-        print ("Previous Holder created: " + s[0].Name)
-        x=s[0].Placement.Base.x
-        w=s[0].Shape.BoundBox.XLength
-        pos=FreeCAD.Vector(x+w, 0, 0)
-        a=bsh_cmd.makeSocketHolder(propList, pos)
-    else:
-        print ("First Holder created")
-        a=bsh_cmd.makeSocketHolder(propList)
+    pos = bsh_utils.getNewPosition()
+    a=bsh_cmd.makeSocketHolder(propList, pos)
 
     a.ViewObject.ShapeColor=(0.8,0.8,0.8)
     print('created obj ' + a.Name + ' ' + a.Label)
@@ -58,6 +46,7 @@ class insertSocketHolderForm(prototypeDialog):
     FreeCADGui.SendMsgToActiveView("ViewFit")
 
     
+# fixme: sometimes isChecked object gets already deleted runtime error
 class insertBitHolderForm(prototypeDialog):
   def __init__(self):
     super(insertBitHolderForm,self).__init__('bitHolder.ui')
@@ -72,21 +61,8 @@ class insertBitHolderForm(prototypeDialog):
       self.form.createTagObject.isChecked()\
       ]
 
-    # calculate position, right of existing cutouts 
-    # todo improve, sort by RL index not Name
-
-    # get list of Cutout objects
-    objs = [i for i in FreeCAD.activeDocument().Objects if hasattr (i, "BSHType") and i.BSHType == "Holder"]
-    s = sorted(objs, key = lambda w: w.Name, reverse = True)
-    if len(s) > 0:
-        print ("Previous Holder created: " + s[0].Name)
-        x=s[0].Placement.Base.x
-        w=s[0].Shape.BoundBox.XLength
-        pos=FreeCAD.Vector(x+w, 0, 0)
-        a=bsh_cmd.makeBitHolder(propList, pos)
-    else:
-        print ("First Holder created")
-        a=bsh_cmd.makeBitHolder(propList)
+    pos = bsh_utils.getNewPosition()
+    a=bsh_cmd.makeBitHolder(propList, pos)
 
     a.ViewObject.ShapeColor=(0.8,0.8,0.8)
     print('created obj ' + a.Name + ' ' + a.Label)
@@ -124,21 +100,8 @@ class insertAnyHolderForm(prototypeDialog):
       self.form.createTagObject.isChecked()\
       ]
 
-    # calculate position, right of existing cutouts 
-    # todo improve, sort by RL index not Name
-
-    # get list of Cutout objects
-    objs = [i for i in FreeCAD.activeDocument().Objects if hasattr (i, "BSHType") and i.BSHType == "Holder"]
-    s = sorted(objs, key = lambda w: w.Name, reverse = True)
-    if len(s) > 0:
-        print ("Previous Holder created: " + s[0].Name)
-        x=s[0].Placement.Base.x
-        w=s[0].Shape.BoundBox.XLength
-        pos=FreeCAD.Vector(x+w, 0, 0)
-        a=bsh_cmd.makeAnyHolder(propList, pos)
-    else:
-        print ("First Holder created")
-        a=bsh_cmd.makeAnyHolder(propList)
+    pos = bsh_utils.getNewPosition()
+    a=bsh_cmd.makeAnyHolder(propList, pos)
 
     a.ViewObject.ShapeColor=(0.8,0.8,0.8)
     print('created obj ' + a.Name + ' ' + a.Label)

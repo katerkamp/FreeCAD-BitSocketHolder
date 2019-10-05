@@ -62,6 +62,5 @@ class prototypeDialog(object):
     'CAN be redefined to remove other attributes, such as arrow()s or label()s'
     try: self.view.removeEventCallback('SoEvent',self.call)
     except: pass
-    #skat if FreeCAD.ActiveDocument: FreeCAD.ActiveDocument.recompute()
     FreeCADGui.Control.closeDialog()
 
