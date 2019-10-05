@@ -111,7 +111,7 @@ def getSlotSize(props, toolWidth, toolHeight, toolDepth):
 
   trayHeight = math.ceil(toolHeight + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
   slotWidth = math.ceil(toolWidth + 2 * props.marginTop) # todo use marginLeftRight
-  trayDepth = toolDepth + props.magHoleDepth + props.basePlateThickness
+  trayDepth = math.ceil(toolDepth + props.magHoleDepth + props.basePlateThickness)
 
   isRecomputeNeeded = False
   if maxZ > 0:
