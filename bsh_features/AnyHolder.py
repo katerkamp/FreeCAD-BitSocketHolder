@@ -67,8 +67,11 @@ class AnyHolder(Holder):
     # Scale slighly bigger for tolerance
     #Draft.scale([toolShape],delta=FreeCAD.Vector(1.0,1.0,1.0),center=FreeCAD.Vector(-106.0,-86.0,0.0),copy=False,legacy=False)
 
+    fp.CutoutWidth = toolCutout.BoundBox.XLength
+    fp.CutoutHeight = toolCutout.BoundBox.YLength
+    fp.CutoutDepth = toolCutout.BoundBox.ZLength
 
-    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, toolCutout.BoundBox.XLength, toolCutout.BoundBox.YLength, fp.Depth)
+    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, fp)
     bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     # center cutout in box horizontally, position vertically with top margin

@@ -66,8 +66,11 @@ class SocketHolder(Holder):
     socketHole = socketHole.fuse(magHole4)
 
     bsh_utils.addCutoutObject(fp, socketHole, 'SocketCutout')
+    fp.CutoutWidth = socketHole.BoundBox.XLength
+    fp.CutoutHeight = socketHole.BoundBox.YLength
+    fp.CutoutDepth = socketHole.BoundBox.ZLength
 
-    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, socketHole.BoundBox.XLength, socketHole.BoundBox.YLength, fp.Depth)
+    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, fp)
     bsh_utils.markHolderRecompute(isRecomputeNeeded)
 
     socketHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - socketHoleDiameter/2, 0))

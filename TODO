@@ -4,8 +4,5 @@
 * Auto display x y z dimensions of tray
 * Read String and Cutout selector widgets and create extra objects in addition to the slot object
 * Option to upload cutout shapes
-* Allow bounding boxes to decrease (in case of cutout depth change to smaller value etc)
-
-
 
 

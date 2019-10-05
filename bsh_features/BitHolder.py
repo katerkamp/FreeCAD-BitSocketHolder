@@ -62,7 +62,11 @@ class BitHolder(Holder):
 
     bsh_utils.addCutoutObject(fp, bitHole, 'BitCutout')
 
-    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, bitHole.BoundBox.XLength, bitHole.BoundBox.YLength, fp.Depth)
+    fp.CutoutWidth = bitHole.BoundBox.XLength
+    fp.CutoutHeight = bitHole.BoundBox.YLength
+    fp.CutoutDepth = bitHole.BoundBox.ZLength
+
+    isRecomputeNeeded, slotWidth, trayHeight, trayDepth = bsh_utils.getSlotSize(props, fp)
 
     bitHole.translate(FreeCAD.Vector(slotWidth/2, trayHeight - props.marginTop - bitHoleDiameter/2, 0))
 

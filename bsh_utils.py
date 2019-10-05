@@ -86,43 +86,36 @@ def isInside(wire, charWireList):
   return False
   
 
-def getSlotSize(props, toolWidth, toolHeight, toolDepth):
+def getSlotSize(props, fp):
   # see what sizes already exist
   # calculate tray insert height (y direction)
   # calculate tray insert depth
 
-  maxY = 0 # depends on hole diameter
-  maxZ = 0 # depends on hole depth
+  maxY = 0
+  maxZ = 0
 
   for obj in FreeCAD.activeDocument().Objects:
     objGui = FreeCAD.activeDocument().getObject(obj.Name)
     if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
       print(objGui.Name + " " + objGui.Label + " dia:" + str(objGui.Diameter) + " height:" + str(objGui.Shape.BoundBox.YLength))
-      if objGui.Shape.BoundBox.YLength == float("-inf"):
-          continue # thats our self
-      if maxY < objGui.Shape.BoundBox.YLength:
-        maxY = objGui.Shape.BoundBox.YLength
-      if objGui.Tag:
-          ZLengthNoText = objGui.Shape.BoundBox.ZLength - props.tagTextHeight
-      else:
-          ZLengthNoText = objGui.Shape.BoundBox.ZLength
-      if maxZ < ZLengthNoText:
-        maxZ = ZLengthNoText
-
-  trayHeight = math.ceil(toolHeight + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
-  slotWidth = math.ceil(toolWidth + 2 * props.marginTop) # todo use marginLeftRight
-  trayDepth = math.ceil(toolDepth + props.magHoleDepth + props.basePlateThickness)
+      if (objGui.Name == fp.Name):
+        continue # its us, we are interested in others only
+      if maxY < objGui.CutoutHeight:
+        maxY = objGui.CutoutHeight
+      if maxZ < objGui.CutoutDepth:
+        maxZ = objGui.CutoutDepth
 
   isRecomputeNeeded = False
-  if maxZ > 0:
-    if trayDepth > maxZ:
-      isRecomputeNeeded = True
-    else:
-      trayDepth = maxZ
-    if trayHeight > maxY:
-      isRecomputeNeeded = True
-    else:
-      trayHeight = maxY
+  if fp.CutoutDepth > maxZ:
+    isRecomputeNeeded = True
+    maxZ = fp.CutoutDepth
+  if fp.CutoutHeight > maxY:
+    isRecomputeNeeded = True
+    maxY = fp.CutoutHeight
+
+  trayHeight = math.ceil(maxY + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
+  slotWidth = math.ceil(fp.CutoutWidth + 2 * props.marginTop) # todo use marginLeftRight
+  trayDepth = math.ceil(maxZ + props.basePlateThickness)
 
   print("Tray Insert Block Size: w" + str(slotWidth) + " h" + str(trayHeight) + " d" + str(trayDepth))
 

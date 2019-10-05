@@ -27,6 +27,9 @@ class Holder(object):
     obj.addProperty("App::PropertyInteger","PosFB","Base","Position Index fron to back").PosFB
     obj.addProperty("App::PropertyBool","CutoutObject","Base","Create Cutout Object").CutoutObject
     obj.addProperty("App::PropertyBool","TagObject","Base","Create Tagstring Object").TagObject
+    obj.addProperty("App::PropertyFloat","CutoutWidth","Base","Cutout (incl. Magnets) Bounding Box Width (X)").TagObject
+    obj.addProperty("App::PropertyFloat","CutoutHeight","Base","Cutout (incl. Magnets) Bounding Box Height (Y)").TagObject
+    obj.addProperty("App::PropertyFloat","CutoutDepth","Base","Cutout (incl. Magnets) Bounding Box Depth (Z)").TagObject
     obj.addExtension("Part::AttachExtensionPython",obj)
     self.Name=obj.Name
   def execute(self, fp):

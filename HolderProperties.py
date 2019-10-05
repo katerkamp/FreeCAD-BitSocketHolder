@@ -31,7 +31,7 @@ class HolderProperties:
     doc.set('C1', 'Move wall to the outside, needed to compensate for filament extrusion width')
 
     doc.set('A2', 'Magnet Hole Diameter')
-    doc.set('B2', '2.2')
+    doc.set('B2', '2.4')
     doc.setDisplayUnit('B2:B2', 'mm')
     doc.setAlias('B2', 'magHoleDiameter')
     doc.set('C2', 'Diameter of the magnetic cylinder, including adjustment for filament extrusion width')
