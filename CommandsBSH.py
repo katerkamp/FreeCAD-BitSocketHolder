@@ -34,7 +34,8 @@ class insertSocketHolder:
     import bsh_forms
     FreeCADGui.Control.showDialog(bsh_forms.insertSocketHolderForm())
   def GetResources(self):
-    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","SocketSlot.svg"),'MenuText':'Insert a socket storage position','ToolTip':'Insert a socket slot'}
+    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","SocketSlot.svg"),\
+      'MenuText':'Insert a socket storage position','ToolTip':'Insert a socket slot'}
 
 
 class insertBitHolder:        
@@ -42,7 +43,8 @@ class insertBitHolder:
     import bsh_forms
     FreeCADGui.Control.showDialog(bsh_forms.insertBitHolderForm())
   def GetResources(self):
-    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","BitSlot.svg"),'MenuText':'Insert a hex bit storage position','ToolTip':'Insert a hex bit slot'}
+    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","BitSlot.svg"),\
+      'MenuText':'Insert a hex bit storage position','ToolTip':'Insert a hex bit slot'}
 
 
 class insertAnyHolder:        
@@ -50,7 +52,8 @@ class insertAnyHolder:
     import bsh_forms
     FreeCADGui.Control.showDialog(bsh_forms.insertAnyHolderForm())
   def GetResources(self):
-    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","AnySlot.svg"),'MenuText':'Insert a custom shaped storage position','ToolTip':'Insert a custom designed slot'}
+    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","AnySlot.svg"),\
+      'MenuText':'Insert a custom shaped storage position','ToolTip':'Insert a custom designed slot'}
 
 class createAnyShape:        
   def Activated (self):
@@ -60,7 +63,16 @@ class createAnyShape:
     bsh_cmd.makeAnyShape()
   def GetResources(self):
     print("Create Shape getResources")
-    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","AnyShape.svg"),'MenuText':'Create a custom tool shape','ToolTip':'Create a custom designed tool shape'}
+    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","AnyShape.svg"),\
+      'MenuText':'Create a custom tool shape','ToolTip':'Create a custom designed tool shape'}
+
+class insertPad:        
+  def Activated (self):
+    import bsh_forms
+    FreeCADGui.Control.showDialog(bsh_forms.insertPadForm())
+  def GetResources(self):
+    return{'Pixmap':os.path.join(os.path.dirname(os.path.abspath(__file__)),"icons","Pad.svg"),\
+      'MenuText':'Insert Tray Size Padding Box','ToolTip':'Allows to create trays of given size'}
 
 #---------------------------------------------------------------------------
 # Adds the commands to the FreeCAD command manager
@@ -69,3 +81,4 @@ addCommand('insertSocketHolder',insertSocketHolder())
 addCommand('insertBitHolder',insertBitHolder())
 addCommand('insertAnyHolder',insertAnyHolder())
 addCommand('createAnyShape',createAnyShape())
+addCommand('insertPad', insertPad())

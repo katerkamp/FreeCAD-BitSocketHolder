@@ -86,6 +86,28 @@ def isInside(wire, charWireList):
   return False
   
 
+def getCurrentTrayCrossSectDimensions(props):
+
+  import math
+  maxY = 0
+  maxZ = 0
+
+  for obj in FreeCAD.activeDocument().Objects:
+    objGui = FreeCAD.activeDocument().getObject(obj.Name)
+    if hasattr (objGui, "BSHType") and objGui.BSHType == "Holder":
+      print(objGui.Name + " " + objGui.Label + " dia:" + str(objGui.Diameter) + " height:" + str(objGui.Shape.BoundBox.YLength))
+      if not (math.isinf(objGui.CutoutHeight) or math.isinf(objGui.CutoutDepth)):
+        if maxY < objGui.CutoutHeight:
+          maxY = objGui.CutoutHeight
+        if maxZ < objGui.CutoutDepth:
+          maxZ = objGui.CutoutDepth
+
+  trayHeight = math.ceil(maxY + props.marginTop + props.marginBottom + props.marginMiddle + props.tagTextSize)
+  trayDepth = math.ceil(maxZ + props.basePlateThickness)
+
+  return trayHeight, trayDepth
+
+
 def getSlotSize(props, fp):
   # see what sizes already exist
   # calculate tray insert height (y direction)

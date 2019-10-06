@@ -7,7 +7,10 @@ from DraftVecUtils import rounded
 from math import degrees
 from bsh_features.SocketHolder import SocketHolder
 from bsh_features.BitHolder import BitHolder
+from bsh_features.Pad import Pad
 from bsh_features.AnyHolder import AnyHolder
+from HolderProperties import HolderProperties
+import bsh_utils
 
 __author__="skat"
 __url__="github.com/katerkamp/ToolboxTrayOrganizer"
@@ -47,6 +50,19 @@ def makeBitHolder(propList=[], pos=None, Z=None):
   a.Placement.Base=pos
   rot=FreeCAD.Rotation(FreeCAD.Vector(0,0,1),Z)
   a.Placement.Rotation=rot.multiply(a.Placement.Rotation)
+  return a
+
+def makePad(propList=[], pos=None, Z=None):
+  if pos==None:
+    pos=FreeCAD.Vector(0,0,0)
+  if Z==None:
+    Z=FreeCAD.Vector(0,0,1)
+  a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Pad")
+  Pad(a,*propList)
+  a.ViewObject.Proxy=0
+  a.Placement.Base=pos
+  #rot=FreeCAD.Rotation(FreeCAD.Vector(0,0,1),Z)
+  #a.Placement.Rotation=rot.multiply(a.Placement.Rotation)
   return a
 
 def makeAnyHolder(propList=[], pos=None, Z=None):

@@ -73,6 +73,27 @@ class insertBitHolderForm(prototypeDialog):
     FreeCAD.activeDocument().recompute()
     FreeCADGui.SendMsgToActiveView("ViewFit")
 
+class insertPadForm(prototypeDialog):
+  def __init__(self):
+    super(insertPadForm,self).__init__('pad.ui')
+  def accept(self):
+    HolderProperties().initDocument()
+
+    propList=[\
+      self.form.trayWidth.value(),\
+      self.form.trayHeight.value(),\
+      self.form.trayDepth.value()\
+      ]
+
+    pos = bsh_utils.getNewPosition()
+    a=bsh_cmd.makePad(propList, pos)
+
+    a.ViewObject.ShapeColor=(0.5,0.8,0.5)
+    FreeCADGui.Control.closeDialog()
+    FreeCAD.activeDocument().commitTransaction()
+    FreeCAD.activeDocument().recompute()
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+
     
 class insertAnyHolderForm(prototypeDialog):
   def __init__(self):

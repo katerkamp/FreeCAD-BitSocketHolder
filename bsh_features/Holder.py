@@ -5,15 +5,8 @@ __title__="Bit/Socket Holder objects"
 __author__="katerkamp"
 __url__="github.com/katerkamp/FreeCAD/BitSocketHolder"
 __license__="LGPL 3"
-objs=['SocketHolder', 'BitHolder', 'AnyHolder']
 
 import FreeCAD, FreeCADGui, Part, bsh_cmd, bsh_utils
-
-vO=FreeCAD.Vector(0,0,0)
-vX=FreeCAD.Vector(1,0,0)
-vY=FreeCAD.Vector(0,1,0)
-vZ=FreeCAD.Vector(0,0,1)
-
 
 class Holder(object):
   def __init__(self,obj):

@@ -25,7 +25,7 @@ class HolderProperties:
     doc = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet', HolderProperties.DocumentLabel)
   
     doc.set('A1', 'Cutout Increase')
-    doc.set('B1', '0,2')
+    doc.set('B1', '0,35')
     doc.setDisplayUnit('B1:B1', 'mm')
     doc.setAlias('B1', 'cutoutIncrease')
     doc.set('C1', 'Move wall to the outside, needed to compensate for filament extrusion width')
@@ -77,16 +77,9 @@ class HolderProperties:
     doc.setDisplayUnit('B10:B10', 'mm')
     doc.setAlias('B10', 'magHoleOffset')
 
-    # will be calculated automatically based on base plate thickness, otherwise if specified base plate thickness is the min value
-    # and error will be reported if value too small
-    doc.set('A11', 'Depth of Tray Block without text padding height')
-    doc.set('B11', '')
-    doc.setDisplayUnit('B11:B11', 'mm')
-    doc.setAlias('B11', 'trayBaseDepth')
-
-    doc.set('A12', 'Path to ttf font file')
-    doc.set('B12', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf')
-    doc.setAlias('B12', 'ttfFontPath')
+    doc.set('A11', 'Path to ttf font file')
+    doc.set('B11', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf')
+    doc.setAlias('B11', 'ttfFontPath')
 
     FreeCAD.activeDocument().recompute()
     print('created TrayProps spreadsheet')

@@ -5,7 +5,6 @@ __title__="Bit/Socket Holder objects"
 __author__="katerkamp"
 __url__="github.com/katerkamp/FreeCAD/BitSocketHolder"
 __license__="LGPL 3"
-objs=['SocketHolder', 'BitHolder', 'AnyHolder']
 
 import FreeCAD, FreeCADGui, Part, bsh_cmd, bsh_utils
 

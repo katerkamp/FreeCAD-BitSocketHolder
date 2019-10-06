@@ -31,7 +31,7 @@ class ToolboxTray ( Workbench ):
   # todo these tools are always active even if Gui.ActiveDocument is None, grey them out
   def Initialize(self):
     import CommandsBSH
-    cmdList=["insertSocketHolder", "insertBitHolder", "insertAnyHolder", "createAnyShape"]
+    cmdList=["insertSocketHolder", "insertBitHolder", "insertAnyHolder", "createAnyShape", "insertPad"]
     self.appendToolbar("BSH Tools",cmdList)
     Log ('Loading BSH tools: done\n')
     menu = ["Tool Shapes"]
